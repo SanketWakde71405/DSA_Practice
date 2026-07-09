@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Array as ADT
 struct Array
 {
     int *a;
@@ -21,7 +22,7 @@ void createArray(struct Array *arr, int u_size, int t_size)
     }
 }
 
-// Array display function
+// Array display function Time complexity O(n)
 void displayArray(struct Array *arr)
 {
     printf("Displaying array\n");
@@ -31,6 +32,7 @@ void displayArray(struct Array *arr)
     }
 }
 
+// Insert element at index function Time complexity O(n)
 int insertElementatI(struct Array *arr, int index, int element)
 {
 
@@ -50,6 +52,7 @@ int insertElementatI(struct Array *arr, int index, int element)
     return 1;
 }
 
+// Delete element at index function Time complexity O(n)
 int deleteElementatI(struct Array *arr, int index)
 {
     if (index < 0 && index >= arr->used_size)
@@ -66,12 +69,56 @@ int deleteElementatI(struct Array *arr, int index)
     return 1;
 }
 
+// Linear search function Time complexity O(n)
+int linearSearch(struct Array *arr, int element)
+{
+
+    for (int i = 0; i < arr->used_size; i++)
+    {
+        if (arr->a[i] == element)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+// Binary search function - (Works only on sorted array) Time complexity O(logn)
+int binarySearch(struct Array *arr, int element)
+{
+
+    int low = 0;
+    int high = arr->used_size - 1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (arr->a[mid] == element)
+        {
+            return mid;
+        }
+        else if (arr->a[mid] < element)
+        {
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+    return -1;
+}
+
 int main()
 {
     struct Array arr;
 
     createArray(&arr, 5, 10);
     displayArray(&arr);
+
+    // Insert element at index function call
     int success = insertElementatI(&arr, 2, 45);
 
     if (success == 1)
@@ -84,14 +131,44 @@ int main()
         printf("\nElement insertion failed\n");
     }
 
-    int deletionSuccess =deleteElementatI(&arr,3);
+    // Delete element at index function call
+    int deletionSuccess = deleteElementatI(&arr, 3);
 
-    if(deletionSuccess==1){
+    if (deletionSuccess == 1)
+    {
         printf("\nElement deleted successfully\n");
         displayArray(&arr);
     }
-    else{
+    else
+    {
         printf("\nElement deletion failed\n");
     }
+
+    int searchElement = 45;
+
+    // Linear search function call
+    int searchIndex = linearSearch(&arr, searchElement);
+
+    if (searchIndex != -1)
+    {
+        printf("\nElement %d found at index %d\n", searchElement, searchIndex);
+    }
+    else
+    {
+        printf("\nElement %d not found in the array\n", searchElement);
+    }
+
+    // Binary search works only on sorted array
+    searchIndex = binarySearch(&arr, searchElement);
+
+    if (searchIndex != -1)
+    {
+        printf("\nElement %d found at index %d\n", searchElement, searchIndex);
+    }
+    else
+    {
+        printf("\nElement %d not found in the array\n", searchElement);
+    }
+
     return 0;
 }
