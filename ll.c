@@ -84,6 +84,131 @@ struct Node *insertAtIndex(struct Node *head,int index, int data){
     return head;
 }
 
+// Deletion of head node in linked list Time complexity O(1)
+struct Node *deleteHead(struct Node *ptr){
+    if(ptr==NULL){
+        printf("List is empty\n");
+        return NULL;
+    }
+
+    struct Node* temp=ptr;
+    ptr=ptr->next;
+    free(temp);
+
+    return ptr;
+}
+
+// Deletion of last node in linked list Time complexity O(n)
+struct Node *deleteEnd(struct Node *head){
+    if(head==NULL){
+        printf("List is empty\n");
+        return NULL;
+    }
+
+    struct Node* p=head;
+    struct Node* q=head->next;
+
+    while(q->next!=NULL){
+        p=p->next;
+        q=q->next;
+    }
+
+    p->next=NULL;
+    free(q);
+
+    return head;
+}
+
+// Deletion of a specific node in linked list Time complexity O(n)
+struct Node *deleteNode(struct Node *head, struct Node *nodeToDelete){
+    if(head==NULL || nodeToDelete==NULL){
+        printf("List is empty or node to delete is NULL\n");
+        return head;
+    }
+
+    if(head==nodeToDelete){
+        struct Node* temp=head;
+        head=head->next;
+        free(temp);
+        return head;
+    }
+
+    struct Node* p=head;
+
+    while(p->next!=NULL && p->next!=nodeToDelete){
+        p=p->next;
+    }
+
+    if(p->next==NULL){
+        printf("Node to delete not found in the list\n");
+        return head;
+    }
+
+    p->next=nodeToDelete->next;
+    free(nodeToDelete);
+
+    return head;
+}
+
+// Deleting a node at a specific index in linked list Time complexity O(n)
+struct Node *deleteAtIndex(struct Node *head,int index){
+    if(head==NULL){
+        printf("List is empty\n");
+        return NULL;
+    }
+
+    int i=0;
+    struct Node* p=head;
+    struct Node* q=head->next;
+
+    while(i!=index-1 && q->next!=NULL){
+        p=p->next;
+        q=q->next;
+        i++;
+    }
+
+    if(i!=index-1){
+        printf("Index out of bounds\n");
+        return head;
+    }
+
+    p->next=q->next;
+    free(q);
+
+    return head;
+}
+
+// Deleting a node by value in linked list Time complexity O(n)
+struct Node *deleteByValue(struct Node *head, int value){
+    if(head==NULL){
+        printf("List is empty\n");
+        return NULL;
+    }
+
+    struct Node* p=head;
+    struct Node* q=head->next;
+
+    if(p->data==value){
+        head=head->next;
+        free(p);
+        return head;
+    }
+
+    while(q!=NULL && q->data!=value){
+        p=p->next;
+        q=q->next;
+    }
+
+    if(q==NULL){
+        printf("Value not found in the list\n");
+        return head;
+    }
+
+    p->next=q->next;
+    free(q);
+    return head;
+}
+
 // Main function
 int main()
 {
@@ -139,6 +264,49 @@ int main()
     // Displaying linked list after insertion at a specific index 
     printf("\nLinked list after insertion at a specific index\n");
     linkedListTraversal(head);
+
+    // Deleting the head node of linked list 
+    head=deleteHead(head);
+
+    // Displaying linked list after dletion of head node
+    printf("\nLinked list after deletion of head node\n");
+    linkedListTraversal(head);
+
+    // Deleting the last node of linked list
+    head=deleteEnd(head);
+
+    // Displaying linked list after deletion of last node
+    printf("\nLinked list after deletion of last node\n");
+    linkedListTraversal(head);
+
+    // Deleting a specific node of linked list
+    head=deleteNode(head,third);
+
+    // Displaying linked list after deletion of a specific node
+    printf("\nLinked list after deletion of a specific node\n");
+    linkedListTraversal(head);
+
+    // Deleting a node at a specific index in linked list 
+    head=deleteAtIndex(head,2);
+
+    // Displaying linked list after deletion of a node at a specific index
+    printf("\nLinked list after deletion of a node at a specified index\n");
+    linkedListTraversal(head);
+
+    // Deleting a node by value in linked list
+    head=deleteByValue(head,90);
+
+    // Displaying linked list after deletion of a node by value
+    printf("\nLinked list after deletion of a node by value\n");
+    linkedListTraversal(head);
+    
+
+
+
+
+
+
+
 
     return 0;
 }
