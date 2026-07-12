@@ -32,7 +32,7 @@ void push(struct stack* sp, int val){
 
 int pop(struct stack* sp){
     if(isEmpty(sp)){
-        printf("Stack underflow| There is no element in stack to pop\n");
+        printf("Stack underflow! There is no element in stack to pop\n");
         return -1; // Considering stack contains only positive numbers
     }
 
@@ -96,6 +96,7 @@ int main(){
    push(s,733);
    push(s,346);
    push(s,8);
+//    push(s,95); // Can't push Stack overflow 
 
 
 
@@ -114,13 +115,26 @@ int main(){
 
 
    printf("\nAfter popping top %d\n",pop(s)); // Last In First Out (LIFO)
+
+/*Added to check whether pop gives stack underflow error or not */
+//    printf("\nAfter popping top %d\n",pop(s)); // Last In First Out (LIFO)
+//    printf("\nAfter popping top %d\n",pop(s)); // Last In First Out (LIFO)
+//    printf("\nAfter popping top %d\n",pop(s)); // Last In First Out (LIFO)
+//    printf("\nAfter popping top %d\n",pop(s)); // Last In First Out (LIFO)
+//    printf("\nAfter popping top %d\n",pop(s)); // Last In First Out (LIFO)
+//    printf("\nAfter popping top %d\n",pop(s)); // Last In First Out (LIFO)
+//    printf("\nAfter popping top %d\n",pop(s)); // Last In First Out (LIFO)
+//    printf("\nAfter popping top %d\n",pop(s)); // Last In First Out (LIFO)
+//    printf("\nAfter popping top %d\n",pop(s)); // Last In First Out (LIFO)
+//    printf("\nAfter popping top %d\n",pop(s)); // Last In First Out (LIFO)
+
    
-   printf("+-------+\n");
-   for (int j = 0; j <= s->top; j++)
-   {
-       printf("| %5d |\n", peek(s, j + 1));
-       printf("+-------+\n");
-   }
+//    printf("+-------+\n");
+//    for (int j = 0; j <= s->top; j++)
+//    {
+//        printf("| %5d |\n", peek(s, j + 1));
+//        printf("+-------+\n");
+//    }
 
    printf("The value of empty function after pushing any element %d\n", isEmpty(s));
    printf("The value of full function after pushing any element %d\n", isFull(s));
