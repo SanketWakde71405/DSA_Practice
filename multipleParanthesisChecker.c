@@ -1,5 +1,5 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 struct stack
 {
@@ -87,47 +87,55 @@ int stackBottom(struct stack *sp)
     return sp->arr[0];
 }
 
-int paranthesisChecker(struct stack* sp, char* str){
+int multipleParanthesisChecker(struct stack* sp, char* str){
 
     int i=0;
     char ch='0';
-    while(str[i]!='\0'){
-        if(str[i]=='('){
-            push(sp,str[i]);
+    while (str[i] != '\0')
+    {
+
+        if (str[i] == '(' || str[i] == '[' || str[i] == '{')
+        {
+            push(sp, str[i]);
         }
 
-        if(str[i]==')'){
-            if(isEmpty(sp)){
+        else if (str[i] == ')' || str[i] == ']' || str[i] == '}')
+        {
+
+            if (isEmpty(sp))
                 return 0;
-            }
-            ch=pop(sp);
+
+            char top = pop(sp);
+
+            if ((str[i] == ')' && top != '(') ||
+                (str[i] == ']' && top != '[') ||
+                (str[i] == '}' && top != '{'))
+                return 0;
         }
+
         i++;
     }
 
-    if(isEmpty(sp)) return 1;
-
-    return 0;
+    return isEmpty(sp);
 }
 
-int main(){
+int main()
+{
 
-    char* str="(5-(4*2)/755))";
-    
-    struct stack* s= (struct stack*) malloc(sizeof(struct stack));
-    s->top=-1;
-    s->size=20;
+    char *str = "([5-(4*2)]/{755})";
+
+    struct stack *s = (struct stack *)malloc(sizeof(struct stack));
+    s->top = -1;
+    s->size = 40;
     s->arr = (char *)malloc(s->size * sizeof(char));
 
+    int res= multipleParanthesisChecker(s,str);
 
-    int paranthesisResult=paranthesisChecker(s,str);
-
-    if(paranthesisResult==1){
-        printf("The %s expression is valid",str);
+    if(res==1){
+        printf("The expression %s is valid",str);
     }else{
-        printf("The %s expression is invalid",str);
+        printf("The expression %s is invalid", str);
     }
-
 
     return 0;
 }

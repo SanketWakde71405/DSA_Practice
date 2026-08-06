@@ -24,6 +24,7 @@ void push(struct stack* sp, int val){
     if(isFull(sp)){
         printf("Stack overflow\n");
         printf("The value %d cannot be pushed into the stack\n",val);
+        return;
     }
 
     sp->top++;
