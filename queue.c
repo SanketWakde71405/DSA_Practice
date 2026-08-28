@@ -49,6 +49,26 @@ int dequeue(struct Queue* q){
     return a;
 }
 
+int queueFront(struct Queue* q){
+    if(isEmpty(q)){
+        printf("Queue undeflow! Queue is empty. Cannot return front element.\n");
+        return -1;
+    }
+
+    return q->arr[q->f+1];
+    
+}
+
+int queueRear(struct Queue* q){
+    if (isEmpty(q))     
+    {
+        printf("Queue undeflow! Queue is empty. Cannot return rear element.\n");
+        return -1;
+    }
+    
+    return q->arr[q->r];
+}
+
 int main(){
    struct Queue q;
    q.size=100;
@@ -70,6 +90,9 @@ int main(){
    enqueue(&q,12);
    enqueue(&q,15);
    enqueue(&q,18);
+   
+   printf("Printing the front element %d\n", queueFront(&q));
+   printf("Printing the rear element %d\n", queueRear(&q));
 
    // Dequeuing element to check whether FIFO is implemented. Similar to traversal of queue
    while(!isEmpty(&q)){
