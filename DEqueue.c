@@ -1,157 +1,208 @@
+// Online C compiler to run C program online
 #include <stdio.h>
 #include <stdlib.h>
 
 struct DEQueue
 {
-    int front;
-    int rear;
     int size;
     int capacity;
-    int *array;
+    int rear;
+    int front;
+    int *arr;
 };
 
-int isFull(struct DEQueue *dq)
+int isFull(struct DEQueue *q)
 {
-    return (dq->size == dq->capacity);
+    return q->size == q->capacity;
 }
 
-int isEmpty(struct DEQueue *dq)
+int isEmpty(struct DEQueue *q)
 {
-    return (dq->size == 0);
+    return q->size == 0;
 }
 
-void enqueueFront(struct DEQueue *dq, int val)
+void enqueueFront(struct DEQueue *q, int val)
 {
-    if (isFull(dq))
+    if (isFull(q))
     {
-        printf("DEQueue overflow! Cannot enqueue at front\n");
+        printf("Queue overflow! Cannot enqueue element to the front.\n");
         return;
     }
 
-    dq->front = (dq->front - 1 + dq->capacity) % dq->capacity;
-    dq->array[dq->front] = val;
-    dq->size++;
-}
-
-void enqueueRear(struct DEQueue *dq, int val)
-{
-    if (isFull(dq))
+    if (isEmpty(q))
     {
-        printf("DEQueue overflow! Cannot enqueue at rear\n");
+        q->front++;
+        q->rear++;
+        q->arr[q->front] = val;
+        q->size++;
         return;
     }
 
-    dq->array[dq->rear] = val;
-    dq->rear = (dq->rear + 1) % dq->capacity;
-    dq->size++;
+    if (q->front == 0)
+    {
+
+        for (int i = q->rear; i >= q->front; i--)
+        {
+            q->arr[i + 1] = q->arr[i];
+        }
+
+        q->rear++;
+        q->size++;
+        q->arr[q->front] = val;
+        return;
+    }
+
+    q->front--;
+    q->arr[q->front] = val;
+    q->size++;
 }
 
-int dequeueFront(struct DEQueue *dq)
+void enqueueRear(struct DEQueue *q, int val)
 {
-    if (isEmpty(dq))
+    if (isFull(q))
     {
-        printf("DEQueue underflow! Cannot dequeue from front\n");
+        printf("Queue overflow! Cannot add enqueue element to the rear.\n");
+        return;
+    }
+
+    if (isEmpty(q))
+    {
+        q->front++;
+        q->rear++;
+        q->arr[q->rear] = val;
+        q->size++;
+        return;
+    }
+
+    if (q->rear == q->capacity - 1 && q->front != 0)
+    {
+        for (int i = q->front; i <= q->rear; i++)
+        {
+            q->arr[i - 1] = q->arr[i];
+        }
+        q->arr[q->rear] = val;
+        q->front--;
+        q->size++;
+        return;
+    }
+
+    q->rear++;
+    q->arr[q->rear] = val;
+    q->size++;
+}
+
+int dequeueFront(struct DEQueue *q)
+{
+    if (isEmpty(q))
+    {
+        printf("Queue underflow! Cannot dequeue element from front.\n");
         return -1;
     }
 
-    int val = dq->array[dq->front];
-    dq->front = (dq->front + 1) % dq->capacity;
-    dq->size--;
+    int val = q->arr[q->front];
+    q->front++;
+    if (q->front == q->rear + 1)
+    {
+        q->front = -1;
+        q->rear = -1;
+    }
+    q->size--;
     return val;
 }
 
-int dequeueRear(struct DEQueue *dq)
+int dequeueRear(struct DEQueue *q)
 {
-    if (isEmpty(dq))
+    if (isEmpty(q))
     {
-        printf("DEQueue underflow! Cannot dequeue from rear\n");
+        printf("Queue underflow! Cannot dequeue element from rear.\n");
         return -1;
     }
 
-    dq->rear = (dq->rear - 1 + dq->capacity) % dq->capacity;
-    int val = dq->array[dq->rear];
-    dq->size--;
+    int val = q->arr[q->rear];
+    q->rear--;
+    if (q->rear == q->front - 1)
+    {
+        q->front = -1;
+        q->rear = -1;
+    }
+    q->size--;
     return val;
 }
 
-int getFront(struct DEQueue *dq)
+int getFront(struct DEQueue *q)
 {
-    if (isEmpty(dq))
+    if (isEmpty(q))
     {
-        printf("DEQueue is empty! Cannot get front element\n");
+        printf("Queue underflow! Cannot get the front of the queue.\n");
         return -1;
     }
 
-    return dq->array[dq->front];
+    return q->arr[q->front];
 }
 
-int getRear(struct DEQueue *dq)
+int getRear(struct DEQueue *q)
 {
-    if (isEmpty(dq))
+    if (isEmpty(q))
     {
-        printf("DEQueue is empty! Cannot get rear element\n");
+        printf("Queue underflow! Cannot get the rear of the queue.\n");
         return -1;
     }
 
-    return dq->array[(dq->rear - 1 + dq->capacity) % dq->capacity];
+    return q->arr[q->rear];
 }
-
-void display(struct DEQueue *dq)
+void display(struct DEQueue *q)
 {
-    if (isEmpty(dq))
+
+    if (isEmpty(q))
     {
-        printf("DEQueue is empty! Nothing to display\n");
+        printf("Queue underflow! Queue is empty.\n");
         return;
     }
 
-    printf("DEQueue elements are: ");
-    for (int i = 0; i < dq->size; i++)
+    printf("Printing queue elements: ");
+    for (int i = q->front; i <= q->rear; i++)
     {
-        int index = (dq->front + i) % dq->capacity;
-        printf("%d ", dq->array[index]);
+        printf("%d ", q->arr[i]);
     }
     printf("\n");
 }
 
 int main()
 {
+
     struct DEQueue *dq = (struct DEQueue *)malloc(sizeof(struct DEQueue));
     if (dq == NULL)
     {
         printf("Memory allocation failed\n");
         return 1;
     }
-
-    dq->capacity = 5;
-    dq->front = 0;
-    dq->rear = 0;
+    dq->capacity = 10;
+    dq->front = dq->rear = -1;
     dq->size = 0;
-    dq->array = (int *)malloc(dq->capacity * sizeof(int));
-    if (dq->array == NULL)
-    {
-        printf("Memory allocation for array failed\n");
-        free(dq);
-        return 1;
-    }
+    dq->arr = (int *)malloc(dq->capacity * sizeof(int));
 
-    enqueueRear(dq, 10);
-    enqueueRear(dq, 20);
-    enqueueFront(dq, 5);
-    enqueueFront(dq, 35);
-    enqueueFront(dq, 55);
-
-    // enqueueFront(dq, 0);  // Queue overflow! Cannot enqueue at front
-    // enqueueRear(dq, 25); // Queue overflow! Cannot enqueue at rear
-
-    display(dq);
-    
+    enqueueFront(dq, 50);
+    enqueueFront(dq, 40);
+    enqueueFront(dq, 30);
+    enqueueFront(dq, 20);
+    enqueueFront(dq, 10);
     dequeueFront(dq);
+    dequeueFront(dq);
+    enqueueRear(dq, 60);
+    enqueueRear(dq, 70);
+    enqueueRear(dq, 80);
+    enqueueRear(dq, 90);
+    enqueueRear(dq, 100);
     dequeueRear(dq);
+    // enqueueRear(dq,110); // Cannot add as queue is full
 
     display(dq);
-
-    printf("Front element: %d\n", getFront(dq));
-    printf("Rear element: %d\n", getRear(dq));
+    printf("The size of queue is %d\n", dq->size);
+    printf("The index of rear is %d\n", dq->rear);
+    printf("The index of front is %d\n", dq->front);
+    printf("The value at front is %d\n", getFront(dq));
+    printf("The value at rear is %d\n", getRear(dq));
+    // Write C code here
 
     return 0;
 }
