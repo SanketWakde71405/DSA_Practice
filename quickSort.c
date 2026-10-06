@@ -21,12 +21,12 @@ int partition(int *a, int low, int high)
     int temp = 0;
     do
     {
-        while (a[i] <= pivot)
+        while (a[i] <= pivot && i <= high)
         {
             i++;
         }
 
-        while (a[j] > pivot)
+        while (a[j] > pivot && j >= low)
         {
             j--;
         }
