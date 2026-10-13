@@ -28,6 +28,26 @@ void preOrderTraversal(struct node *root){
     }
 }
 
+void postOrderTraversal(struct node *root){
+
+    // LEFT SUBTREE -> RIGHT SUBTREE -> ROOTNODE
+    if(root!=NULL){
+        postOrderTraversal(root->left);
+        postOrderTraversal(root->right);
+        printf("%d -> ",root->data);
+    }
+}
+
+void inOrderTraversal(struct node *root){
+
+    // LEFT SUBTREE -> ROOTNODE-> RIGHT SUBTREE 
+    if(root!=NULL){
+         inOrderTraversal(root->left);
+         printf("%d -> ",root->data);
+         inOrderTraversal(root->right);
+    }
+}
+
 int main(){
     
     struct node* root = createNode(4);
@@ -48,6 +68,14 @@ int main(){
 
     printf("Preorder traversal of the binary tree is: \n");
     preOrderTraversal(root); 
+    printf("NULL\n");
+
+    printf("Postorder traversal of the binary tree is: \n");
+    postOrderTraversal(root); 
+    printf("NULL\n");
+
+    printf("Inorder traversal of the binary tree is: \n");
+    inOrderTraversal(root); 
     printf("NULL\n");
 
 
